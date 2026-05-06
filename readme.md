@@ -1,0 +1,1 @@
+An interactive educational tool to visualize and automate the Playfair Cipher. Features dynamic 5x5 matrix generation and a step-by-step Tutor mode that explains geometric shift rules (Row, Column, and Rectangle Swap) in real-time. Designed for pedagogical cryptanalysis using vanilla JavaScript and CSS Grid.

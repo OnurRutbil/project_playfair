@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playfair Cipher AI Tutor</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <div style="position: relative; margin-bottom: 20px;">
+            <h1 style="margin-bottom: 0;">Playfair Cipher AI Tutor</h1>
+            <button class="help-btn" onclick="openModal()" title="How to Use">?</button>
+        </div>
+        
+        <div class="tab-nav">
+            <button id="tab-btn-encrypt" class="tab-btn active" onclick="switchTab('encrypt')">Encrypter Mode</button>
+            <button id="tab-btn-decrypt" class="tab-btn" onclick="switchTab('decrypt')">Decrypter Mode</button>
+        </div>
+
+        <div class="tab-content">
+            <div id="panel-encrypt" class="panel">
+                <h2>Encryption Mode</h2>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
+                        <label for="keyword-encrypt">Master Keyword:</label>
+                        <input type="text" id="keyword-encrypt" value="PLAYFAIR" oninput="updateGridEncrypt(); clearDropdown('encrypt')">
+                    </div>
+                    
+                    <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
+                        <label>Quick Examples:</label>
+                        <select id="encrypt-examples" class="example-select" onchange="loadSelectedExample('encrypt')">
+                            <option value="">-- Type your own text below, or choose an example --</option>
+                            <option value="ex1">Classic: Hide the Gold</option>
+                            <option value="ex2">Espionage: Meet at Noon</option>
+                            <option value="ex3">Tactical: Midnight Drop</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 0;">
+                    <label for="plaintext">Message to Encrypt:</label>
+                    <textarea id="plaintext" rows="3" placeholder="Enter plaintext..." oninput="clearDropdown('encrypt')"></textarea>
+                </div>
+                
+                <button id="start-btn-encrypt" class="start-btn" onclick="initializeStepMode('encrypt')">Start Encryption Tutor</button>
+
+                <div class="tutor-layout">
+                    <div id="tutor-left-encrypt" class="tutor-inputs" style="display: none;">
+                        <div id="prepared-group-encrypt" class="output-group" style="margin-top: 0;">
+                            <label>Step 1: Prepared Message (Pairs):</label>
+                            <div id="prepared-text-encrypt" class="output-box prepared-box">...</div>
+                        </div>
+
+                        <div class="output-group">
+                            <label>Encrypted Result:</label>
+                            <div id="encrypt-output" class="output-box">...</div>
+                        </div>
+
+                        <div id="tutor-steps-encrypt" class="tutor-controls">
+                            <div id="tutor-text-prep-note" class="tutor-note tutor-step-note hidden"></div>
+                            <button class="tutor-step-btn" onclick="processPairTutor('encrypt')">Process Next Pair</button>
+                            <div id="tutor-pair-note-encrypt" class="tutor-note tutor-step-note"></div>
+                        </div>
+
+                        <button class="reset-btn" onclick="resetTutor('encrypt')">Start New Message</button>
+                    </div>
+
+                    <div class="tutor-visuals">
+                        <h3 style="margin-top: 0; text-align: center;">Encrypter Matrix</h3>
+                        <div class="grid-wrapper">
+                            <div id="cipher-grid-encrypt" class="grid"></div>
+                            <svg id="arrow-canvas-encrypt" class="arrow-canvas">
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="rgba(231, 76, 60, 0.9)" />
+                                    </marker>
+                                </defs>
+                            </svg>
+                    </div>
+                    <div id="grid-explanation-encrypt" class="tutor-note"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-decrypt" class="panel" style="display: none;">
+                <h2>Decryption Mode</h2>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
+                        <label for="keyword-decrypt">Master Keyword:</label>
+                        <input type="text" id="keyword-decrypt" value="PLAYFAIR" oninput="updateGridDecrypt(); clearDropdown('decrypt')">
+                    </div>
+                    
+                    <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
+                        <label>Quick Examples:</label>
+                        <select id="decrypt-examples" class="example-select" onchange="loadSelectedExample('decrypt')">
+                            <option value="">-- Type your own text below, or choose an example --</option>
+                            <option value="ex1">Military: Strike at Dawn</option>
+                            <option value="ex2">Adventure: Secret Cave</option>
+                            <option value="ex3">Nautical: Abandon Ship</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 0;">
+                    <label for="ciphertext">Message to Decrypt:</label>
+                    <textarea id="ciphertext" rows="3" placeholder="Enter ciphertext..." oninput="clearDropdown('decrypt')"></textarea>
+                </div>
+                
+                <button id="start-btn-decrypt" class="start-btn" onclick="initializeStepMode('decrypt')">Start Decryption Tutor</button>
+
+                <div class="tutor-layout">
+                    <div id="tutor-left-decrypt" class="tutor-inputs" style="display: none;">
+                        <div id="prepared-group-decrypt" class="output-group" style="margin-top: 0;">
+                            <label>Step 1: Prepared Message (Pairs):</label>
+                            <div id="prepared-text-decrypt" class="output-box prepared-box">...</div>
+                        </div>
+
+                        <div class="output-group">
+                            <label>Decrypted Result:</label>
+                            <div id="decrypt-output" class="output-box">...</div>
+                        </div>
+
+                        <div id="tutor-steps-decrypt" class="tutor-controls">
+                            <div id="tutor-pair-note-decrypt" class="tutor-note tutor-step-note"></div>
+                            <button class="tutor-step-btn" onclick="processPairTutor('decrypt')">Process Next Pair</button>
+                        </div>
+
+                        <button class="reset-btn" onclick="resetTutor('decrypt')">Start New Message</button>
+                    </div>
+
+                    <div class="tutor-visuals">
+                        <h3 style="margin-top: 0; text-align: center;">Decrypter Matrix</h3>
+                        <div class="grid-wrapper">
+                            <div id="cipher-grid-decrypt" class="grid"></div>
+                            <svg id="arrow-canvas-decrypt" class="arrow-canvas">
+                                <defs>
+                                    <marker id="arrowhead-dec" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="rgba(231, 76, 60, 0.9)" />
+                                    </marker>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div id="grid-explanation-decrypt" class="tutor-note"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="help-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal()">&times;</button>
+            <h2>Welcome, Cryptographer! 🕵️‍♂️</h2>
+            <p style="text-align: center; color: #555; margin-bottom: 1.5rem;">This isn't just a calculator—it's a tutor. You're about to learn one of history's most famous manual ciphers.</p>
+            
+            <div class="modal-section">
+                <h4>1. The Matrix</h4>
+                <p>Pick a <strong>Master Keyword</strong>. Watch the 5x5 grid transform. We use this matrix to find our secret coordinates. Because a 5x5 grid only holds 25 letters, <strong>I and J</strong> must share a cell to make the 26-letter alphabet fit!</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>2. Preparing for Battle</h4>
+                <p>Playfair needs pairs. Type your message and hit <strong>Start Tutor</strong>. I'll show you how we clean the text and insert 'X' wedges to split up double letters. <br><em>(e.g., 'BALLOON' becomes 'BA LX LO ON')</em></p>
+            </div>
+
+            <div class="modal-section">
+                <h4>3. The Geometry</h4>
+                <p>Click <strong>Process Next Pair</strong> to see the magic happen on the grid:</p>
+                <ul>
+                    <li><strong>Same Row?</strong> Slide right (or left to decrypt).</li>
+                    <li><strong>Same Column?</strong> Slide down (or up to decrypt).</li>
+                    <li><strong>The Rectangle?</strong> Swap corners!</li>
+                </ul>
+            </div>
+
+            <button class="modal-action-btn" onclick="closeModal()">Let's Encrypt!</button>
+        </div>
+    </div>
+
+    <div id="tour-overlay" class="hidden"></div>
+    <div id="tour-tooltip" class="tour-box hidden">
+        <p id="tour-text"></p>
+        <div class="tour-buttons">
+            <button id="tour-next-btn" onclick="nextTourStep()">Next ➔</button>
+            <button id="tour-skip-btn" onclick="endTour()">Skip</button>
+        </div>
+        <div id="tour-arrow" class="tour-arrow"></div>
+    </div>
+
+    <script src="static/js/main.js"></script>
+</body>
+</html>
