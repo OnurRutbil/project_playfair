@@ -8,12 +8,12 @@
 </head>
 <body>
     <div class="container">
-        
+
         <div style="position: relative; margin-bottom: 20px;">
             <h1 style="margin-bottom: 0;">Playfair Cipher AI Tutor</h1>
             <button class="help-btn" onclick="openModal()" title="How to Use">?</button>
         </div>
-        
+
         <div class="tab-nav">
             <button id="tab-btn-encrypt" class="tab-btn active" onclick="switchTab('encrypt')">Encrypter Mode</button>
             <button id="tab-btn-decrypt" class="tab-btn" onclick="switchTab('decrypt')">Decrypter Mode</button>
@@ -22,13 +22,15 @@
         <div class="tab-content">
             <div id="panel-encrypt" class="panel">
                 <h2>Encryption Mode</h2>
-                
+
                 <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
                     <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
                         <label for="keyword-encrypt">Master Keyword:</label>
-                        <input type="text" id="keyword-encrypt" value="PLAYFAIR" oninput="updateGridEncrypt(); clearDropdown('encrypt')">
+                        <input type="text" id="keyword-encrypt" value="PLAYFAIR"
+                               oninput="this.value = this.value.toUpperCase(); updateGridEncrypt(); clearDropdown('encrypt')"
+                               style="text-transform: uppercase;">
                     </div>
-                    
+
                     <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
                         <label>Quick Examples:</label>
                         <select id="encrypt-examples" class="example-select" onchange="loadSelectedExample('encrypt')">
@@ -44,7 +46,7 @@
                     <label for="plaintext">Message to Encrypt:</label>
                     <textarea id="plaintext" rows="3" placeholder="Enter plaintext..." oninput="clearDropdown('encrypt')"></textarea>
                 </div>
-                
+
                 <button id="start-btn-encrypt" class="start-btn" onclick="initializeStepMode('encrypt')">Start Encryption Tutor</button>
 
                 <div class="tutor-layout">
@@ -57,11 +59,18 @@
                         <div class="output-group">
                             <label>Encrypted Result:</label>
                             <div id="encrypt-output" class="output-box">...</div>
+                            <div id="copy-btns-encrypt" class="copy-btns hidden">
+                                <button class="copy-btn" onclick="copyResult('encrypt')">&#128203; Copy</button>
+                                <button class="copy-send-btn" onclick="copyAndSendToOther('encrypt')">&#128203; Copy &amp; Open in Decrypt &rarr;</button>
+                            </div>
                         </div>
 
                         <div id="tutor-steps-encrypt" class="tutor-controls">
                             <div id="tutor-text-prep-note" class="tutor-note tutor-step-note hidden"></div>
-                            <button class="tutor-step-btn" onclick="processPairTutor('encrypt')">Process Next Pair</button>
+                            <div class="step-btn-row">
+                                <button class="tutor-step-btn" onclick="processPairTutor('encrypt')">Process Next Pair &rarr;</button>
+                                <button class="tutor-back-btn" onclick="goBackPair('encrypt')">&larr; Go Back</button>
+                            </div>
                             <div id="tutor-pair-note-encrypt" class="tutor-note tutor-step-note"></div>
                         </div>
 
@@ -79,21 +88,23 @@
                                     </marker>
                                 </defs>
                             </svg>
+                        </div>
+                        <div id="grid-explanation-encrypt" class="tutor-note"></div>
                     </div>
-                    <div id="grid-explanation-encrypt" class="tutor-note"></div>
                 </div>
             </div>
-        </div>
 
-        <div id="panel-decrypt" class="panel" style="display: none;">
+            <div id="panel-decrypt" class="panel" style="display: none;">
                 <h2>Decryption Mode</h2>
-                
+
                 <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
                     <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
                         <label for="keyword-decrypt">Master Keyword:</label>
-                        <input type="text" id="keyword-decrypt" value="PLAYFAIR" oninput="updateGridDecrypt(); clearDropdown('decrypt')">
+                        <input type="text" id="keyword-decrypt" value="PLAYFAIR"
+                               oninput="this.value = this.value.toUpperCase(); updateGridDecrypt(); clearDropdown('decrypt')"
+                               style="text-transform: uppercase;">
                     </div>
-                    
+
                     <div class="input-group" style="flex: 1; min-width: 250px; margin-top: 0;">
                         <label>Quick Examples:</label>
                         <select id="decrypt-examples" class="example-select" onchange="loadSelectedExample('decrypt')">
@@ -109,7 +120,7 @@
                     <label for="ciphertext">Message to Decrypt:</label>
                     <textarea id="ciphertext" rows="3" placeholder="Enter ciphertext..." oninput="clearDropdown('decrypt')"></textarea>
                 </div>
-                
+
                 <button id="start-btn-decrypt" class="start-btn" onclick="initializeStepMode('decrypt')">Start Decryption Tutor</button>
 
                 <div class="tutor-layout">
@@ -122,11 +133,18 @@
                         <div class="output-group">
                             <label>Decrypted Result:</label>
                             <div id="decrypt-output" class="output-box">...</div>
+                            <div id="copy-btns-decrypt" class="copy-btns hidden">
+                                <button class="copy-btn" onclick="copyResult('decrypt')">&#128203; Copy</button>
+                                <button class="copy-send-btn" onclick="copyAndSendToOther('decrypt')">&#128203; Copy &amp; Open in Encrypt &rarr;</button>
+                            </div>
                         </div>
 
                         <div id="tutor-steps-decrypt" class="tutor-controls">
+                            <div class="step-btn-row">
+                                <button class="tutor-step-btn" onclick="processPairTutor('decrypt')">Process Next Pair &rarr;</button>
+                                <button class="tutor-back-btn" onclick="goBackPair('decrypt')">&larr; Go Back</button>
+                            </div>
                             <div id="tutor-pair-note-decrypt" class="tutor-note tutor-step-note"></div>
-                            <button class="tutor-step-btn" onclick="processPairTutor('decrypt')">Process Next Pair</button>
                         </div>
 
                         <button class="reset-btn" onclick="resetTutor('decrypt')">Start New Message</button>
@@ -150,13 +168,13 @@
             </div>
         </div>
     </div>
-    
+
     <div id="help-modal" class="modal-overlay hidden">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeModal()">&times;</button>
             <h2>Welcome, Cryptographer! 🕵️‍♂️</h2>
             <p style="text-align: center; color: #555; margin-bottom: 1.5rem;">This isn't just a calculator—it's a tutor. You're about to learn one of history's most famous manual ciphers.</p>
-            
+
             <div class="modal-section">
                 <h4>1. The Matrix</h4>
                 <p>Pick a <strong>Master Keyword</strong>. Watch the 5x5 grid transform. We use this matrix to find our secret coordinates. Because a 5x5 grid only holds 25 letters, <strong>I and J</strong> must share a cell to make the 26-letter alphabet fit!</p>
@@ -169,12 +187,17 @@
 
             <div class="modal-section">
                 <h4>3. The Geometry</h4>
-                <p>Click <strong>Process Next Pair</strong> to see the magic happen on the grid:</p>
+                <p>Click <strong>Process Next Pair →</strong> to see the magic happen on the grid. Use <strong>← Go Back</strong> to undo a step, or click any processed pair in the display to jump back to it.</p>
                 <ul>
                     <li><strong>Same Row?</strong> Slide right (or left to decrypt).</li>
                     <li><strong>Same Column?</strong> Slide down (or up to decrypt).</li>
                     <li><strong>The Rectangle?</strong> Swap corners!</li>
                 </ul>
+            </div>
+
+            <div class="modal-section">
+                <h4>4. Copy &amp; Continue</h4>
+                <p>After encrypting, use <strong>Copy &amp; Open in Decrypt</strong> to send your ciphertext straight to the Decrypter tab — perfect for verifying your work!</p>
             </div>
 
             <button class="modal-action-btn" onclick="closeModal()">Let's Encrypt!</button>
@@ -190,6 +213,8 @@
         </div>
         <div id="tour-arrow" class="tour-arrow"></div>
     </div>
+
+    <div id="copy-toast" class="copy-toast"></div>
 
     <script src="static/js/main.js"></script>
 </body>

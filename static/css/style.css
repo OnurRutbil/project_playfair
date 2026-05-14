@@ -188,8 +188,14 @@ input, textarea {
 
 .reset-btn:active { transform: translateY(1px); }
 
+.step-btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 0.8rem;
+}
+
 .tutor-step-btn {
-    width: 100%;
+    flex: 1;
     padding: 0.8rem;
     background-color: #475569;
     color: white;
@@ -198,10 +204,83 @@ input, textarea {
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
-    margin-top: 0.8rem;
 }
 
 .tutor-step-btn:hover { background-color: #334155; }
+
+.tutor-back-btn {
+    flex: 0 0 auto;
+    padding: 0.8rem 1rem;
+    background-color: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.tutor-back-btn:hover { background-color: #d97706; }
+.tutor-back-btn:active { transform: translateY(1px); }
+
+.copy-btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.copy-btn {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.9rem;
+    background: #e2e8f0;
+    color: #374151;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover { background: #cbd5e1; }
+
+.copy-send-btn {
+    flex: 1;
+    padding: 0.45rem 0.9rem;
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copy-send-btn:hover { background: #0284c7; }
+
+.copy-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1e293b;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+}
+
+.copy-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 
 /* ==========================================================================
    Cryptography Matrix (5x5 Grid)
@@ -273,7 +352,20 @@ input, textarea {
 
 .processed-pair {
     color: #9ca3af !important; /* Muted state for history */
-    opacity: 0.6; 
+    opacity: 0.6;
+}
+
+.clickable-pair {
+    cursor: pointer;
+    text-decoration: underline dotted #9ca3af;
+    border-radius: 2px;
+    transition: opacity 0.15s, color 0.15s;
+}
+
+.clickable-pair:hover {
+    opacity: 1 !important;
+    color: #6366f1 !important;
+    text-decoration: underline solid #6366f1;
 }
 
 /* ==========================================================================
