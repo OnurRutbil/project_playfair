@@ -44,13 +44,4 @@ An interactive educational tool that visualizes and teaches the Playfair Cipher 
 
 ## AI Tools Used
 
-This project was developed with assistance from the following AI tools:
-
-- **Anthropic Claude** (claude.ai) — used for [e.g. generating the 
-  step-by-step tutor logic, CSS styling, debugging the digraph 
-  preparation].
-
-- **Google Gemini** (gemini.google.com) — used for [e.g. initial 
-  structure and matrix rendering logic].
-
-The generated outputs were reviewed, tested, and adapted. 
+This project was initially started with **Google Gemini** (gemini.google.com), then continued and improved with **Anthropic Claude** (claude.ai) to fix bugs, refine the tutor logic, and add new features.
